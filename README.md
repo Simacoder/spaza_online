@@ -7,32 +7,32 @@ solutions can unlock new opportunities for these small businesses.
 
 # Challenges Faced by Spaza-shop Owners
 
-- 1 Limited Access to Capital
+-  Limited Access to Capital
 Securing financing to expand or upgrade
 their businesses can be a significant
 hurdle for many spaza-shop owners.
-- 2 Supply Chain Complexities
+- Supply Chain Complexities
 Sourcing inventory and managing logistics
 can be a complex and time-consuming
 process for small-scale operators.
-- 3 Intense Competition
+-  Intense Competition
 Spaza shops often face stiff competition
 from larger retail chains, necessitating
 innovative strategies to stand out.
-- 4 Regulatory Obstacles
+-  Regulatory Obstacles
 Navigating the legal and administrative
 requirements for operating a small
 business can be a significant challenge
 
 # Building an Ecommerce Platform for Spaza-shops
 
-- 1 Needs Assessment
+-  Needs Assessment
 Understand the unique requirements and pain points of spaza-shop
 owners to develop a tailored ecommerce solution.
-- 2 User-friendly Design
+-  User-friendly Design
 Ensure the platform is intuitive and easy to navigate, catering to both techsavvy
 and less experienced users.
-- 3 Integrated Features
+-  Integrated Features
 Incorporate features like inventory management, order processing, and
 customer relationship tools to streamline operations
 
@@ -49,4 +49,4 @@ customer relationship tools to streamline operations
 
 # AUTHORS
 - Simanga Mchunu 
-- - Thato Mahlala
+- Thato Mahlala
