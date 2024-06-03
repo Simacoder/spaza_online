@@ -49,4 +49,4 @@ customer relationship tools to streamline operations
 
 # AUTHORS
 - Simanga Mchunu 
-- Thato Mahlala
+- Thato Matlala
