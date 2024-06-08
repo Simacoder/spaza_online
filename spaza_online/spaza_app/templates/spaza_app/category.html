@@ -11,7 +11,7 @@
         <div class="col-sm-3">
             <div class="list-group">
                 {% for val in title %}
-                <a href="#" class="list-group-item
+                <a href="{% url 'category-title' val.title %}" class="list-group-item
                 list-group-item-action" aria-current="true">{{val.title}}</a>
             
             {% endfor %}
@@ -21,7 +21,7 @@
             <div class="row">
                 {% for prod in product %}
                 <div class="col text-center mb-4">
-                    <a href="#" class="btn">
+                    <a href="{% url 'product-detail' prod.id %}" class="btn">
                         <div>
                             <img src="{{prod.product_image.url}}" width="300px" height="200px"/>
                             <div class="fw-bold">{{prod.title}}</div>
