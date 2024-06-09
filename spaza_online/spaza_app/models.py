@@ -1,6 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
+
+PROVINCE_CHOICES = (
+    ('GAUTENG', 'GP'),
+    ('KWAZULU NATAL', 'KZN'),
+    ('WESTERN CAPE', 'WC'),
+    ('EASTERN CAPE', 'EC'),
+    ('MPUMALANGA', 'MP'),
+    ('NORTH WEST', 'NW'),
+    ('NORTHERN CAPE', 'NP'),
+    ('LIMPOPO', 'LP'),
+    ('FREE STATE', 'FS'),
+)
 
 CATEGORY_CHOICES = (
     ('CR', 'Curd'),
@@ -24,3 +37,15 @@ class Product(models.Model):
     product_image =models.ImageField(upload_to='product')
     def __str__(self):
         return self.title
+    
+
+class Customer(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    locality = models.CharField(max_length=200)
+    city = models.CharField(max_length=50)
+    mobile = models.IntegerField(default=0)
+    zipcode = models.IntegerField()
+    province = models.CharField(choices=PROVINCE_CHOICES, max_length=100)
+    def __str__(self):
+        return self.name
