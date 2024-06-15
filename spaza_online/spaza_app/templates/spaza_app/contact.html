@@ -34,9 +34,11 @@
     <h2 class="text-center">Contact Us</h2>
     <br>
     <div class="row container">
-        <p class="fs-4 text-center">Address: </p>
-        <p class="fs-4 text-center">contact: </p>
-        <p class="fs-4 text-center">Email: </p>
+      <form method="post" action="{% url 'contact' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
 
     </div>
 </div>

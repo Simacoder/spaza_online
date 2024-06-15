@@ -45,3 +45,9 @@ class CustomerProfileForm(forms.ModelForm):
             'province': forms.Select(attrs={'class':'form-control'}),
             'zipcode': forms.NumberInput(attrs={'class':'form-control'}),
         }
+
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100, required=True)
+    email = forms.EmailField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)

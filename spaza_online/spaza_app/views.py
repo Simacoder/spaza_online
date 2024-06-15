@@ -1,9 +1,12 @@
 from django.db.models import Count
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
+from  django.db.models import Q
+from django.conf import settings
+import razorpay
 from . models import Cart, Customer, Product
-from . forms import CustomerProfileForm, CustomerRegistrationForm
+from . forms import ContactForm, CustomerProfileForm, CustomerRegistrationForm
 from django.contrib import messages
 
 # Create your views here.
@@ -15,7 +18,15 @@ def about(request):
     return render(request, "spaza_app/about.html")
 
 def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Get the form data
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
     return render(request, "spaza_app/contact.html")
+
 
 class CategoryView(View):
     def get(self, request, val):
@@ -115,6 +126,90 @@ def show_cart(request):
     totalamount = amount + 60
     return render(request, 'spaza_app/addtocart.html', locals())
 
+class checkout(View):
+    def get(self, request):
+        user = request.user
+        add = Customer.objects.filter(user=user)
+        cart_items = Cart.objects.filter(user=user)
+        famount = 0
+        for p in cart_items:
+            value = p.quantity * p.product.discounted_price
+            famount = famount + value
+        totalamount =famount + 60
+        razoramount = int(totalamount * 100)
+        client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+        data = {"amount": razoramount, "currency": "ZAR", "receipt": "order_rcptid_11"}
+        payment_response = client.order.create(data = data)
+        print(payment_response)
+        return render(request, 'spaza_app/checkout.html', locals())
+
+
+def plus_cart(request):
+    if request.method == "GET":
+        prod_id = request.GET['prod_id']
+        cartOb = Cart.objects.get(Q(product = prod_id) & Q(user = request.user))
+        cartOb.quantity += 1
+        cartOb.save()
+        user = request.user
+        cart = Cart.objects.filter(user = user)
+        amount = 0
+        for p in cart:
+            value = p.quantity * p.product.discounted_price
+            amount = amount  + value
+        totalamount = amount + 60 
+        # creating data object
+        data = {
+            'quantity':cartOb.quantity,
+            'amount':amount,
+            'totalamount': totalamount
+
+
+        }
+        return JsonResponse(data)
+    
+def minus_cart(request):
+    if request.method == "GET":
+        prod_id = request.GET['prod_id']
+        cartOb = Cart.objects.get(Q(product = prod_id) & Q(user = request.user))
+        cartOb.quantity -= 1
+        cartOb.save()
+        user = request.user
+        cart = Cart.objects.filter(user = user)
+        amount = 0
+        for p in cart:
+            value = p.quantity * p.product.discounted_price
+            amount = amount + value
+        totalamount = amount + 60 
+        # creating data object
+        data = {
+            'quantity':cartOb.quantity,
+            'amount':amount,
+            'totalamount': totalamount
+
+
+        }
+        return JsonResponse(data)
+    
+def remove_cart(request):
+    if request.method == "GET":
+        prod_id = request.GET['prod_id']
+        cartOb = Cart.objects.get(Q(product = prod_id) & Q(user = request.user))
+        cartOb.delete()
+        user = request.user
+        cart = Cart.objects.filter(user = user)
+        amount = 0
+        for p in cart:
+            value = p.quantity * p.product.discounted_price
+            amount = amount + value
+        totalamount = amount + 60 
+        # creating data object
+        data = {
+            'amount':amount,
+            'totalamount': totalamount
+
+
+        }
+        return JsonResponse(data)
         
 
 
