@@ -41,6 +41,8 @@ customer relationship tools to streamline operations
 - HTML
 - Django
 - CSS
+- Javascript
+
 
 # API 
 - payment gateway 
