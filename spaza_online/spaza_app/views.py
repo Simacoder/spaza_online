@@ -1,9 +1,11 @@
 from django.db.models import Count 
 from django.http import HttpResponse, JsonResponse 
 from django.shortcuts import render, redirect 
+from django.urls import reverse
 from django.views import View 
 from  django.db.models import Q 
 from django.conf import settings 
+from .paypal import paypalrestsdk
 import razorpay
 from . models import Cart, Customer, OrderPlaced, Product, Wishlist
 from . forms import ContactForm, CustomerProfileForm, CustomerRegistrationForm
@@ -151,6 +153,54 @@ def address(request):
         totalitem = len(Cart.objects.filter(user=request.user))
         wishitem = len(Wishlist.objects.filter(user=request.user))
     return render(request, "spaza_app/address.html", locals())
+
+def payment(request):
+    if request.method == 'POST':
+        payment = paypalrestsdk.Payment({
+            "intent": "sale",
+            "payer": {
+                "payment_method": "paypal"},
+            "redirect_urls": {
+                "return_url": request.build_absolute_uri(reverse('payment_execute')),
+                "cancel_url": request.build_absolute_uri(reverse('payment_cancel'))},
+            "transactions": [{
+                "item_list": {
+                    "items": [{
+                        "name": "Item Name",
+                        "sku": "item",
+                        "price": "10.00",
+                        "currency": "USD",
+                        "quantity": 1}]},
+                "amount": {
+                    "total": "10.00",
+                    "currency": "USD"},
+                "description": "This is the payment transaction description."}]})
+
+        if payment.create():
+            for link in payment.links:
+                if link.rel == "approval_url":
+                    approval_url = link.href
+                    return redirect(approval_url)
+        else:
+            print(payment.error)
+            return render(request, 'error.html')
+
+    return render(request, 'payment.html')
+
+def payment_execute(request):
+    payment_id = request.GET.get('paymentId')
+    payer_id = request.GET.get('PayerID')
+
+    payment = paypalrestsdk.Payment.find(payment_id)
+
+    if payment.execute({"payer_id": payer_id}):
+        return render(request, 'success.html')
+    else:
+        print(payment.error)
+        return render(request, 'error.html')
+
+def payment_cancel(request):
+    return render(request, 'cancel.html')
 
 @method_decorator(login_required, name = 'dispatch')
 class updateAddress(View):

@@ -1,0 +1,21 @@
+{% extends 'spaza_app/base.html' %}
+{% load static %}
+
+{% block title %} Password Change Done {% endblock title %}
+
+{% block main-content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PayPal Payment</title>
+</head>
+<body>
+    <form action="{% url 'payment' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Pay with PayPal</button>
+    </form>
+</body>
+</html>
+
+{% endblock main-content %}

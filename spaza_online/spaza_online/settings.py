@@ -131,3 +131,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 RAZOR_KEY_ID = 'rzp_test_2TUHCJnGDCobwu'
 RAZOR_KEY_SECRET = 'Hk6ay2FD9VpJqGUljissFWLN'
 
+PAYPAL_CLIENT_ID = 'AQLdm6NAYxvvE1k9Wk_8WCxJi5zLDsEZYTX3jS2_ag0dztr_E38tosN7uOo3rPZCBekjT5KA2yXftkrE'
+PAYPAL_CLIENT_SECRET = 'EFZDLtQY9289aSRhIlmIVDE_chBHvEHXdXIwIPM1nRWvOS-DUBiM19-DsP5xVh3Ttw3TJG5jHNi_eOPn'
+PAYPAL_MODE = 'sandbox'  # or 'live' for production
+

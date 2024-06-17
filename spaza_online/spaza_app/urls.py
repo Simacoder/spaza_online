@@ -5,11 +5,12 @@ from .forms import LoginForm, MyPasswordChangeForm, MyPasswordResetForm, MySetPa
 from . import views
 from django.conf.urls.static import static 
 from django.contrib.auth import views as auth_view 
+from .views import payment, payment_execute, payment_cancel
 
 urlpatterns = [
     path('', views.home),
     path('about/',views.about, name = 'about'),
-    path('contact/', views.contact, name = 'contact'),
+    #path('contact/', views.contact, name = 'contact'),
     path('contact/', views.contact_view, name='contact'),
     path('contact/success/', views.contact_success, name='contact_success'),
     path('category/<slug:val>', views.CategoryView.as_view(), name="category"),
@@ -29,6 +30,9 @@ urlpatterns = [
     path('minuswishlist/', views.minus_wishlist),
     path('search/', views.search, name = 'search'),
     path('wishlist/', views.show_wishlist, name = 'showwishlist'),
+    path('payment/', payment, name='payment'),
+    path('payment/execute/', payment_execute, name='payment_execute'),
+    path('payment/cancel/', payment_cancel, name='payment_cancel'),
 
     # login auth
 
